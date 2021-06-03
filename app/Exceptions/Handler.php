@@ -2,7 +2,10 @@
 
 namespace App\Exceptions;
 
+use App\Response\Response;
+use Dotenv\Exception\ValidationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use ReflectionClass;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -37,5 +40,16 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $e)
+    {
+        $exceptionClass = (new ReflectionClass($e))->getShortName();
+//        dd($e->getCode(), $e->getMessage(), $e->getLine(), $e->getFile());
+        if ($exceptionClass == 'ValidationException'){
+            return Response::json($exceptionClass, $e->errors());
+        }
+
+        return Response::json($exceptionClass);
     }
 }

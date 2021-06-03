@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -23,11 +24,10 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
+            'role_id' => Role::query()->whereTitle('normal user')->first()->id,
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
+            'password' => 12345,
         ];
     }
 
@@ -41,6 +41,63 @@ class UserFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'email_verified_at' => null,
+            ];
+        });
+    }
+
+    /**
+     * @return UserFactory
+     */
+    public function withPasswordConfirmation()
+    {
+        return $this->state(function (array $attribute){
+            return [
+                'password_confirmation' => $attribute['password']
+            ];
+        });
+    }
+
+    public function withoutEmail()
+    {
+        return $this->state(function (array $attribute){
+            return [
+                'email' => null
+            ];
+        });
+    }
+
+    public function withoutName()
+    {
+        return $this->state(function (array $attribute){
+            return [
+                'name' => null
+            ];
+        });
+    }
+
+    public function withoutPassword()
+    {
+        return $this->state(function (array $attribute){
+            return [
+                'password' => null
+            ];
+        });
+    }
+
+    public function withFourCharacterPassword()
+    {
+        return $this->state(function (array $attribute){
+            return [
+                'password' => 1234,
+            ];
+        });
+    }
+
+    public function withMoreThanTwentyCharacterPassword()
+    {
+        return $this->state(function (array $attribute){
+            return [
+                'password' => Str::random(25),
             ];
         });
     }

@@ -21,8 +21,6 @@ Route::post('/register', RegisterController::class)->name('register');
 
 Route::middleware(\App\Http\Middleware\CheckToken::class)->group(function (){
 
-    Route::get('/hi', function (){
-        return \App\Response\Response::json(200);
-    });
+    
 
 });

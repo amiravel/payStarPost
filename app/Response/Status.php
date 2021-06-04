@@ -26,9 +26,19 @@ class Status
             'message' => 'authentication failed! please check your credentials.',
             'hasError' => true
         ],
+        'UnauthorizedException' => [
+            'httpCode' => 403,
+            'message' => 'unauthorized.',
+            'hasError' => true
+        ],
         'ErrorException' => [
             'httpCode' => 500,
             'message' => 'internal server error.',
+            'hasError' => true
+        ],
+        'ModelNotFoundException' => [
+            'httpCode' => 404,
+            'message' => 'Not Found',
             'hasError' => true
         ]
 

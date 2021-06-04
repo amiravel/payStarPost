@@ -14,4 +14,12 @@ abstract class TestCase extends BaseTestCase
 
         $this->artisan('db:seed');
     }
+
+    public function headers()
+    {
+        return [
+            'client_id' => 123456789,
+            'token' => 123456789
+        ];
+    }
 }

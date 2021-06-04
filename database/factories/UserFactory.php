@@ -31,6 +31,28 @@ class UserFactory extends Factory
         ];
     }
 
+    public function admin()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'role_id' => Role::query()->whereTitle('admin')->first()->id,
+            ];
+        });
+    }
+
+    /**
+     * @return UserFactory
+     */
+    public function authenticated()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'client_id' => 123456789,
+                'token' => 123456789
+            ];
+        });
+    }
+
     /**
      * Indicate that the model's email address should be unverified.
      *

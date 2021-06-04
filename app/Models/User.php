@@ -27,6 +27,10 @@ class User extends Authenticatable
         'role_id'
     ];
 
+    protected $with = [
+        'role'
+    ];
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -65,8 +69,31 @@ class User extends Authenticatable
         return Str::random(50) . base64_encode(Carbon::now()->timestamp);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    /**
+     * @param $permission
+     * @return mixed
+     */
+    public function hasPermission($permission)
+    {
+        return $this->role->permissions()
+            ->whereTitle($permission)
+            ->exists();
+    }
+
+    /**
+     * @param $clientId
+     * @return mixed
+     */
+    public static function findByClientId($clientId)
+    {
+        return self::query()->whereClientId($clientId)->firstOrFail();
     }
 }
